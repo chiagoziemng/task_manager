@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class Epic(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
@@ -23,7 +22,10 @@ class Sprint(models.Model):
     tasks = models.ManyToManyField('Task',
     related_name='sprints', blank=True)
 
-class Task(models.Model):
+class VersionMixing:
+    version = models.IntegerField(default=0)
+
+class Task(VersionMixing, models.Model):
     STATUS_CHOICES = [
     ("UNASSIGNED", "Unassigned"),
     ("IN_PROGRESS", "In Progress"),
@@ -41,3 +43,7 @@ class Task(models.Model):
                               null=True, db_comment="Foreign Key to the User who currently owns the task.",)
     class Meta:
         db_table_comment = "Holds information about tasks"
+
+
+
+
